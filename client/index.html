@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Recipe Agent</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <h1>Smart Recipe Agent</h1>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-section="chat">
+                        <i class="fas fa-comments"></i>
+                        Chat
+                    </button>
+                    <button class="nav-btn" data-section="meal-plan">
+                        <i class="fas fa-calendar-alt"></i>
+                        Meal Plan
+                    </button>
+                    <button class="nav-btn" data-section="pantry">
+                        <i class="fas fa-archive"></i>
+                        Pantry
+                    </button>
+                    <button class="nav-btn" data-section="recipes">
+                        <i class="fas fa-book-open"></i>
+                        Recipes
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Chat Section -->
+            <section id="chat-section" class="section active">
+                <div class="container">
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            <h2>AI Recipe Assistant</h2>
+                            <div class="voice-controls">
+                                <button id="voice-btn" class="voice-btn">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button id="voice-stop-btn" class="voice-btn stop" style="display: none;">
+                                    <i class="fas fa-stop"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message assistant">
+                                <div class="message-content">
+                                    <i class="fas fa-robot"></i>
+                                    <p>Hi! I'm your Smart Recipe Agent. I can help you:</p>
+                                    <ul>
+                                        <li>Generate recipes from your available ingredients</li>
+                                        <li>Plan weekly meals based on your preferences</li>
+                                        <li>Create grocery lists and track nutrition</li>
+                                        <li>Optimize leftovers into new meals</li>
+                                        <li>Provide cooking tips and answer questions</li>
+                                    </ul>
+                                    <p>What would you like to cook today?</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <div class="input-group">
+                                <input type="text" id="chat-input" placeholder="Ask me about recipes, ingredients, or cooking tips..." autocomplete="off">
+                                <button id="send-btn" class="send-btn">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="quick-actions">
+                                <button class="quick-btn" data-action="generate-recipe">
+                                    <i class="fas fa-magic"></i>
+                                    Generate Recipe
+                                </button>
+                                <button class="quick-btn" data-action="meal-plan">
+                                    <i class="fas fa-calendar"></i>
+                                    Plan Meals
+                                </button>
+                                <button class="quick-btn" data-action="leftovers">
+                                    <i class="fas fa-recycle"></i>
+                                    Use Leftovers
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Meal Plan Section -->
+            <section id="meal-plan-section" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Weekly Meal Plan</h2>
+                        <button id="generate-meal-plan" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Generate New Plan
+                        </button>
+                    </div>
+                    
+                    <div class="meal-plan-container" id="meal-plan-container">
+                        <div class="meal-plan-placeholder">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h3>No meal plan yet</h3>
+                            <p>Generate a personalized meal plan based on your preferences and dietary needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pantry Section -->
+            <section id="pantry-section" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>My Pantry</h2>
+                        <button id="add-ingredient" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add Ingredients
+                        </button>
+                    </div>
+                    
+                    <div class="pantry-container" id="pantry-container">
+                        <div class="pantry-categories" id="pantry-categories">
+                            <!-- Categories will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recipes Section -->
+            <section id="recipes-section" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Recipe Collection</h2>
+                        <div class="recipe-controls">
+                            <input type="text" id="recipe-search" placeholder="Search recipes..." class="search-input">
+                            <button id="filter-btn" class="btn btn-secondary">
+                                <i class="fas fa-filter"></i>
+                                Filter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="recipes-container" id="recipes-container">
+                        <div class="recipes-grid" id="recipes-grid">
+                            <!-- Recipes will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <div id="modal-overlay" class="modal-overlay">
+            <!-- Recipe Modal -->
+            <div id="recipe-modal" class="modal">
+                <div class="modal-header">
+                    <h3 id="recipe-modal-title">Recipe Details</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-content" id="recipe-modal-content">
+                    <!-- Recipe content will be populated -->
+                </div>
+            </div>
+
+            <!-- Add Ingredient Modal -->
+            <div id="ingredient-modal" class="modal">
+                <div class="modal-header">
+                    <h3>Add Ingredients</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <form id="ingredient-form">
+                        <div class="form-group">
+                            <label for="ingredient-name">Ingredient Name</label>
+                            <input type="text" id="ingredient-name" name="ingredient-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ingredient-quantity">Quantity</label>
+                            <input type="number" id="ingredient-quantity" name="ingredient-quantity" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ingredient-unit">Unit</label>
+                            <select id="ingredient-unit" name="ingredient-unit" required>
+                                <option value="cup">Cup</option>
+                                <option value="tablespoon">Tablespoon</option>
+                                <option value="teaspoon">Teaspoon</option>
+                                <option value="pound">Pound</option>
+                                <option value="ounce">Ounce</option>
+                                <option value="gram">Gram</option>
+                                <option value="piece">Piece</option>
+                                <option value="can">Can</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ingredient-category">Category</label>
+                            <select id="ingredient-category" name="ingredient-category" required>
+                                <option value="produce">Produce</option>
+                                <option value="meat">Meat & Seafood</option>
+                                <option value="dairy">Dairy</option>
+                                <option value="pantry">Pantry</option>
+                                <option value="frozen">Frozen</option>
+                                <option value="bakery">Bakery</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Add Ingredient</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Timer Modal -->
+            <div id="timer-modal" class="modal">
+                <div class="modal-header">
+                    <h3>Cooking Timer</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <div class="timer-container" id="timer-container">
+                        <div class="timer-display">
+                            <span id="timer-time">00:00</span>
+                        </div>
+                        <div class="timer-controls">
+                            <button id="timer-start" class="btn btn-success">Start</button>
+                            <button id="timer-pause" class="btn btn-warning">Pause</button>
+                            <button id="timer-reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                        <div class="timer-setup">
+                            <label for="timer-minutes">Minutes:</label>
+                            <input type="number" id="timer-minutes" min="0" max="999" value="30">
+                            <label for="timer-seconds">Seconds:</label>
+                            <input type="number" id="timer-seconds" min="0" max="59" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Processing your request...</p>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+name = "smart-recipe-agent"
+main = "src/worker.js"
+compatibility_date = "2024-12-18"
+compatibility_flags = ["nodejs_compat"]
+
+[ai]
+binding = "AI"
+
+[[durable_objects.bindings]]
+name = "USER_STATE"
+class_name = "UserState"
+
+[[durable_objects.bindings]]
+name = "RECIPE_CACHE"
+class_name = "RecipeCache"
+
+[[durable_objects.bindings]]
+name = "MEAL_PLAN"
+class_name = "MealPlan"
+
+[[kv_namespaces]]
+binding = "RECIPE_DB"
+id = "recipe-database"
+preview_id = "recipe-database-preview"
+
+[[kv_namespaces]]
+binding = "NUTRITION_DB"
+id = "nutrition-database"
+preview_id = "nutrition-database-preview"
+
+[vars]
+ENVIRONMENT = "production"
+
+# Workers AI configuration
+[ai.models]
+"@cf/meta/llama-3.3-70b-instruct" = "llama-3.3-70b"
+"@cf/meta/llama-3.3-8b-instruct" = "llama-3.3-8b"
+
+# Pages configuration for frontend
+[pages]
+build = { command = "npm run build:client", cwd = "client" }
